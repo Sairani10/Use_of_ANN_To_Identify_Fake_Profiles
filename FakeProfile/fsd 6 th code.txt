@@ -1,0 +1,25 @@
+const { MongoClient } = require('mongodb');
+const client = new MongoClient("mongodb://localhost:27017");
+
+async function main() {
+  await client.connect();
+  const db = client.db("myDB");
+  const users = db.collection("users");
+
+  // Insert
+  await users.insertOne({ name: "Ali", age: 28 });
+
+  // Read
+  const data = await users.find().toArray();
+  console.log("Users:", data);
+
+  // Update
+  await users.updateOne({ name: "Ali" }, { $set: { age: 30 } });
+
+  // Delete
+  await users.deleteOne({ name: "Ali" });
+
+  await client.close();
+}
+
+main();
